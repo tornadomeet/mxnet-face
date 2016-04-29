@@ -22,6 +22,7 @@ Implemented details
 ----------------------
 * you should installed the [dlib](https://github.com/davisking/dlib) and [opencv](https://github.com/Itseez/opencv) libirary with python interface firstly.
 * using dlib for face detection and alignment like [openface](https://cmusatyalab.github.io/openface/), but you can also choose opencv for detection, i had provided the detection model in ```model/opencv/cascade.xml```.
+* using my slightly changed mxnet branch [face](https://github.com/tornadomeet/mxnet/tree/face) for trainig.
 * 385504 images for train, and 20290 for val.
 * run ```./model/get-models.sh``` to download the ```shape_predictor_68_face_landmarks.dat``` for face alignment.
 
