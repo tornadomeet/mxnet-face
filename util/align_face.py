@@ -267,7 +267,9 @@ class AlignDlib:
         return list(map(lambda p: (p.x, p.y), points.parts()))
 
     def align(self, imgDim, rgbImg, bb=None, pad=None, ts=None,
-              landmarks=None, landmarkIndices=INNER_EYES_AND_BOTTOM_LIP, opencv_det=False, opencv_model="./model/opencv/cascade.xml"):
+              landmarks=None, landmarkIndices=INNER_EYES_AND_BOTTOM_LIP,
+              opencv_det=False, opencv_model="../model/opencv/cascade.xml",
+              only_crop=False):
         r"""align(imgDim, rgbImg, bb=None, landmarks=None, landmarkIndices=INNER_EYES_AND_BOTTOM_LIP)
 
         Transform and align a face in an image.
@@ -309,11 +311,11 @@ class AlignDlib:
             if bb is None:
                 return
             if pad is not None:
-                left = max(0, bb.left() - bb.width()*float(pad[0]))
-                top = max(0, bb.top() - bb.height()*float(pad[1]))
-                right = min(rgbImg.shape[1], bb.right() + bb.width()*float(pad[2]))
-                bottom = min(rgbImg.shape[0], bb.bottom()+bb.height()*float(pad[3]))
-                bb = dlib.rectangle(int(left), int(top), int(right), int(bottom))
+                left = int(max(0, bb.left() - bb.width()*float(pad[0])))
+                top = int(max(0, bb.top() - bb.height()*float(pad[1])))
+                right = int(min(rgbImg.shape[1], bb.right() + bb.width()*float(pad[2])))
+                bottom = int(min(rgbImg.shape[0], bb.bottom()+bb.height()*float(pad[3])))
+                bb = dlib.rectangle(left, top, right, bottom)
 
         if landmarks is None:
             landmarks = self.findLandmarks(rgbImg, bb)
@@ -326,10 +328,11 @@ class AlignDlib:
             # reserve more area of forehead on a face
             dstLandmarks[(0,1),1] = dstLandmarks[(0,1),1] + imgDim * float(ts)
             dstLandmarks[2,1] = dstLandmarks[2,1] + imgDim * float(ts) / 2
-        H = cv2.getAffineTransform(npLandmarks[npLandmarkIndices],dstLandmarks)
-        thumbnail = cv2.warpAffine(rgbImg, H, (imgDim, imgDim))
-
-        return thumbnail
+        if not only_crop:
+            H = cv2.getAffineTransform(npLandmarks[npLandmarkIndices],dstLandmarks)
+            return cv2.warpAffine(rgbImg, H, (imgDim, imgDim))
+        else:
+            return rgbImg[top:bottom, left:right] # crop is rgbImg[y: y + h, x: x + w]
 
 
 def write(vals, fName):
@@ -413,7 +416,8 @@ def alignMain(args):
                 outRgb = None
             else:
                 outRgb = align.align(args.size, rgb, pad=args.pad, ts=args.ts,
-                                     landmarkIndices=landmarkIndices, opencv_det=args.opencv_det, opencv_model=args.opencv_model)
+                                     landmarkIndices=landmarkIndices, opencv_det=args.opencv_det,
+                                     opencv_model=args.opencv_model, only_crop=args.only_crop)
                 if outRgb is None and args.verbose:
                     print("  + Unable to align.")
 
@@ -443,8 +447,11 @@ if __name__ == '__main__':
     parser.add_argument('--opencv-det', action='store_true', default=False,
                         help='True means using opencv model for face detection(because sometimes dlib'
                              'face detection will failed')
-    parser.add_argument('--opencv-model', type=str, default='./model/opencv/cascade.xml',
+    parser.add_argument('--opencv-model', type=str, default='../model/opencv/cascade.xml',
                         help="Path to dlib's face predictor.")
+    parser.add_argument('--only-crop', action='store_true', default=False,
+                        help='True : means we only use face detection and crop the face area\n'
+                             'False : both face detection and then do face alignment')
     parser.add_argument('--dlibFacePredictor', type=str, help="Path to dlib's face predictor.",
                         default=os.path.join(dlib_model_dir, "shape_predictor_68_face_landmarks.dat"))
 
