@@ -46,13 +46,13 @@ if ! [ -e src_dict.txt ];then
 else
    echo ".lst file for training already exist."
 fi
-echo "generated .lst file done" 
+echo "generated .lst file done"
 
+# step3: evaluate on celeba test set
 root=/home/work/data/Face/CelebA/Img/img_celeba_cropped
 root_img=$root/img_celeba
 test_list_file=$root/celeba_test.lst
 size=128
 model_prefix=../model/lightened_moon/lightened_moon_fuse
 epoch=82
-# evaluate on celeba test set
 python -u test_celeba.py --root $root_img --test-list $test_list_file --size $size --model-prefix $model_prefix --epoch $epoch

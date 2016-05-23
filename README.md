@@ -21,13 +21,13 @@ Face Identification
 -----------
 ##### How to test
 run ```./test.sh``` in shell.  
-This script will run the evaluation on lfw using trained model, befor running, you should first download the face aligned modelchange your own ```align_data_path``` in test.sh.
+This script will run the evaluation on lfw using trained model, the model needs 128x128 image size for input, you can using your own aligned lfw data, we also offered the [aligin-lfw dataset](http://pan.baidu.com/s/1qYDxeRq), passward : mg2i.  
+before runing, you should change your own ```align_data_path``` in test.sh. the model
 
 ##### How to train
 run ```./run.sh``` in shell.  
 This script will train the lightened cnn face model, using [CASIA-WebFace](http://www.cbsr.ia.ac.cn/english/CASIA-WebFace-Database.html) dataset, more accurately, i used the [cleaned version](https://github.com/happynear/FaceVerification).  
 Again, you should change with your own setting in run.sh, and using your own hyper-parameter when training the model.
-
 
 ##### Implemented details
 * you should installed the [dlib](https://github.com/davisking/dlib) and [opencv](https://github.com/Itseez/opencv) libirary with python interface firstly.

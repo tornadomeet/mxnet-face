@@ -1,4 +1,4 @@
-#!/usr/bin/env sh 
+#!/usr/bin/env sh
 
 # here do not use the the aligned celeba, because we do not know how they align, we need better konw all things in our algorithm
 raw_data_path=/home/work/data/Face/CelebA/Img/img_celeba
@@ -22,7 +22,7 @@ rec_name=celeba
 [ -e $crop_data_path ] || mkdir -p $crop_data_path
 if ! [ -e $crop_done ];then
    for N in $(seq $num_process);do
-	  echo "the sub-process is : $N"	
+	  echo "the sub-process is : $N"
 	  python ../util/align_face.py $raw_data_path --only-crop align $landmarks $crop_data_path --pad $pad --ts $ts &
    done
    wait
@@ -32,7 +32,7 @@ if ! [ -e $crop_done ];then
    done
    wait
    echo 'using opencv for crop face is done'
-   touch $crop_done 
+   touch $crop_done
 else
    echo "$crop_done has already exist."
 fi
@@ -47,22 +47,19 @@ if ! [ -e src_dict.txt ];then
 else
    echo ".lst file for training already exist."
 fi
-echo "generated .lst file done" 
+echo "generated .lst file done"
 
 # step3: use img2rec to generate .rec file for training
 if ! [ -e ${rec_name}_train.rec ]; then
 	$im2rec_path ${list_name}_train.lst $crop_data_path/img_celeba/ ${rec_name}_train.rec resize=160 label_width=40 color=0 encoding='.png' &
 	$im2rec_path ${list_name}_val.lst $crop_data_path/img_celeba/ ${rec_name}_val.rec resize=160 label_width=40 color=0 encoding='.png' &
 else
-	echo "$rec_name already exist."	
+	echo "$rec_name already exist."
 fi
 wait
 echo "generate .rec done"
 
-# step4: trainig the model for face attribute prediction 
-#python -u lightened_moon.py 
-#python -u lightened_moon.py --gpus 0
-#python -u lightened_moon.py --gpus 4,5,6,7
-python -u lightened_moon.py --gpus 2,3,4,5,6,7
-#python -u lightened_moon.py --gpus 2,3,4,5,6,7 --retrain
+# step4: trainig the model for face attribute prediction
+# python -u lightened_moon.py --gpus 2,3,4,5,6,7
+python -u lightened_moon.py --gpus 0
 echo "trining done!"
