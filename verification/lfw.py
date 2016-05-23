@@ -11,7 +11,7 @@ import numpy as np
 from sklearn.cross_validation import KFold
 from sklearn.metrics import accuracy_score
 
-from attribute.lightened_cnn import lightened_cnn_b_feature
+from lightened_cnn import lightened_cnn_b_feature
 
 ctx = mx.gpu(0)
 
