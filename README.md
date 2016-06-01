@@ -15,7 +15,8 @@ Before runing
 cd model
 ./get-models.sh
 ```
-this will download the face alignned model used in [dlib](https://github.com/davisking/dlib), because in the face identification experiment, it will use face alignment technology before extractting face faceture.
+* this will download the face alignned model used in [dlib](https://github.com/davisking/dlib), because in the face identification experiment, it will use face alignment technology before extractting face faceture.
+* using my slightly changed mxnet branch [face](https://github.com/tornadomeet/mxnet/tree/face) for training.
 
 Face Identification
 -----------
@@ -32,7 +33,6 @@ Again, you should change with your own setting in run.sh, and using your own hyp
 ##### Implemented details
 * you should installed the [dlib](https://github.com/davisking/dlib) and [opencv](https://github.com/Itseez/opencv) libirary with python interface firstly.
 * using dlib for face detection and alignment like [openface](https://cmusatyalab.github.io/openface/), but you can also choose opencv for detection, i have provided the detection model in ```model/opencv/cascade.xml```.
-* using my slightly changed mxnet branch [face](https://github.com/tornadomeet/mxnet/tree/face) for training.
 * 385504 images for train, and 20290 for val.
 * run ```./model/get-models.sh``` to download the ```shape_predictor_68_face_landmarks.dat``` for face alignment.
 
@@ -43,6 +43,15 @@ Again, you should change with your own setting in run.sh, and using your own hyp
 * ...
 
 Face Attribute Prediction
+-----------
+##### How to prediction
+```cd attribut```  
+then put the image you want to predict with name aaa.jpg and run in shell:  
+ ```python -u predict.py --img aaa.jpg```
+ the example output will like this:  
+ ![example_out.png](attribute/example_out.png)
+
+
 -----------
 ##### How to test
 run ```./test.sh``` in shell.
