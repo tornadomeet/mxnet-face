@@ -49,7 +49,7 @@ Face Attribute Prediction
 then put the image you want to predict with name aaa.jpg and run in shell:  
  ```python -u predict.py --img aaa.jpg```
  the example output will like this:  
- ![example_out.png](attribute/example_out.png)
+ ![example_out.png](attribute/example_output.png)
 
 
 -----------
