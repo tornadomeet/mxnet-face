@@ -403,7 +403,7 @@ def alignMain(args):
         outDir = os.path.join(args.outputDir, imgObject.cls)
         mkdirP(outDir)
         outputPrefix = os.path.join(outDir, imgObject.name)
-        imgName = outputPrefix + ".png"
+        imgName = outputPrefix + "." + args.ext
 
         if os.path.isfile(imgName):
             if args.verbose:
@@ -473,6 +473,8 @@ if __name__ == '__main__':
                                  default='0')
     alignmentParser.add_argument('--size', type=int, help="Default image size.",
                                  default=96)
+    alignmentParser.add_argument('--ext', type=str, help="Default image extension.",
+                                 default='jpg')
     alignmentParser.add_argument('--fallbackLfw', type=str,
                                  help="If alignment doesn't work, fallback to copying the deep funneled version from this directory..")
     alignmentParser.add_argument('--verbose', action='store_true')
