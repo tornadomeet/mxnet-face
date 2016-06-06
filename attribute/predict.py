@@ -23,6 +23,7 @@ def main():
         opencv_faces = face_cascade.detectMultiScale(gray, 1.3, 5)
         for (x,y,w,h) in opencv_faces:
             faces.append(dlib.rectangle(int(x), int(y), int(x+w), int(y+h)))
+    max_face = faces[0]
     if len(faces) > 0:
             max_face = max(faces, key=lambda rect: rect.width() * rect.height())
     for f in faces:
