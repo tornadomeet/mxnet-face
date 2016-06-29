@@ -4,11 +4,13 @@ import logging
 import pdb
 
 def ch_dev(arg_params, aux_params, ctx):
+    new_args = dict()
+    new_auxs = dict()
     for k, v in arg_params.items():
-        arg_params[k] = mx.nd.array(v.asnumpy(), ctx=ctx)
+        new_args[k] = v.as_in_context(ctx)
     for k, v in aux_params.items():
-        aux_params[k] = mx.nd.array(v.asnumpy(), ctx=ctx)
-    return arg_params, aux_params
+        new_auxs[k] = v.as_in_context(ctx)
+    return new_args, new_auxs
 
 def main():
     ctx = mx.cpu()
@@ -19,7 +21,8 @@ def main():
 
     symbol, arg_params, aux_params = mx.model.load_checkpoint(args.prefix, args.epoch)
     arg_params, aux_params = ch_dev(arg_params, aux_params, ctx)
-    save_callback = mx.callback.do_checkpoint(args.prefix+"_new")
+    # save_callback = mx.callback.do_checkpoint(args.prefix+"_new")
+    save_callback = mx.callback.do_checkpoint(args.prefix)
     save_callback(args.epoch-1, symbol, arg_params, aux_params)
 
 
