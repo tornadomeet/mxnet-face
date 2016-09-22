@@ -81,11 +81,10 @@ if __name__ == "__main__":
     parser.add_argument('--gpu', type=int, default=0, help='the gpu id used for predict')
     parser.add_argument('--prefix', type=str, default='mxnet-face-fr50', help='the prefix of the pre-trained model')
     parser.add_argument('--epoch', type=int, default=0, help='the epoch of the pre-trained model')
-    parser.add_argument('--thresh', type=float, default=0.6, help='the threshold of face score, set bigger will get more'
+    parser.add_argument('--thresh', type=float, default=0.8, help='the threshold of face score, set bigger will get more'
                                                                   'likely face result')
     parser.add_argument('--nms-thresh', type=float, default=0.3, help='the threshold of nms')
-    parser.add_argument('--nest-thresh', type=float, default=0.8, help='the threshold of filter nest')
-    parser.add_argument('--min-size', type=int, default=40, help='the min size of object')
+    parser.add_argument('--min-size', type=int, default=24, help='the min size of object')
     parser.add_argument('--scale', type=int, default=600, help='the scale of shorter edge will be resize to')
     parser.add_argument('--max-scale', type=int, default=1000, help='the maximize scale after resize')
     args = parser.parse_args()
