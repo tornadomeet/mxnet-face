@@ -5,6 +5,7 @@ Using [MXNet](https://github.com/dmlc/mxnet) for Face-related Algorithm
 About
 --------
 Using mxnet for face-related algorithm, here now only provide :
+* a trained `mxnet-face-fr50`(faster-rcnn+resnet-50) model, which achieve tpr=89.7% when fp=100 and tpr=93.0% when fp=500 on fddb.
 * a trained lightened cnn[1] model on **Face Identity**, together with the training script, the single model get *97.13%+-0.88%* accuracy on LFW, and with only 20MB size.
 * a trained lightened moon[1][2] model (combine the changed lightened cnn and moon loss) on **Face Attribute Prediction**, together with the training script, the single model get about *87.41%* accuracy on CelebA, and with only 18MB size.
 
@@ -16,7 +17,17 @@ cd model
 ./get-models.sh
 ```
 * this will download the face alignned model used in [dlib](https://github.com/davisking/dlib), because in the face identification experiment, it will use face alignment technology before extractting face faceture.
-* using my slightly changed mxnet branch [face](https://github.com/tornadomeet/mxnet/tree/face) for training.
+* using my slightly changed mxnet branch [face](https://github.com/tornadomeet/mxnet/tree/face) if you want to train the face attribution model.
+
+Face Detection
+-----------
+we provide the pre-trained model [mxnet-face-fr50-0000.params](http://pan.baidu.com/s/1c2G9SZI), which is trained with resnet-50+faser-rcnn for 7 epoch on wider-face[4] dataset, our mxnet-face-fr50's performance on fddb is:  
+![mxnet-face-fr50-roc.png](detection/mxnet-face-fr50-roc.png)
+the way of using `mxnet-face-fr50` for face detection is very easy:
+* download `mxnet-face-fr50-0000.params`,`mxnet-face-fr50-symbol.json`and put them into detection directory.
+* got to detection dir, and run `./demo.sh`, you can set different parameters for face detection, see it by `python detection.py --help`  
+
+BTW, the detection speed is slow, only about 3~4 image/second on k80 GPU.
 
 Face Identification
 -----------
@@ -75,4 +86,6 @@ This script will train the lightened moon face model, using [CelebA](http://mmla
 Reference
 ---------
 [1] Wu X, He R, Sun Z. A Lightened CNN for Deep Face Representation[J]. arXiv preprint arXiv:1511.02683, 2015.  
-[2] Rudd E, Günther M, Boult T. MOON: A Mixed Objective Optimization Network for the Recognition of Facial Attributes[J]. arXiv preprint arXiv:1603.07027, 2016.
+[2] Rudd E, Günther M, Boult T. MOON: A Mixed Objective Optimization Network for the Recognition of Facial Attributes[J]. arXiv preprint arXiv:1603.07027, 2016.  
+[3] Jiang H, Learned-Miller E. Face detection with the faster R-CNN[J]. arXiv preprint arXiv:1606.03473, 2016.
+[4] Yang S, Luo P, Loy C C, et al. WIDER FACE: A Face Detection Benchmark[J]. arXiv preprint arXiv:1511.06523, 2015.
