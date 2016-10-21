@@ -30,8 +30,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='change the model on saved on a specific device, used in mxnet')
     parser.add_argument('--prefix', default='../model/lightened_cnn/lightened_cnn',
                         help='The prefix(include path) of vgg16 model with mxnet format.')
-    parser.add_argument('--epoch', type=int, default=166,
-                        help='The epoch number of fcn16s model.')
+    parser.add_argument('--epoch', type=int, default=0,
+                        help='The epoch number of pretrained model.')
     parser.add_argument('--dev', type=int, default=-1,
                         help='the task dev which you want the model on, -1:cpu, 0~N:gpu(0)')
     args = parser.parse_args()
