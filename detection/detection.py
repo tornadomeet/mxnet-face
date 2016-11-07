@@ -35,11 +35,12 @@ def resize(im, target_size, max_size):
 
 
 def main():
-    color = cv2.imread(args.img)  # read image in b,g,r order
-    img, scale = resize(color.copy(), args.scale, args.max_scale)
+    color  = cv2.imread(args.img)
+    img  = cv2.cvtColor(color, cv2.COLOR_BGR2RGB)
+    img, scale = resize(img.copy(), args.scale, args.max_scale)
     im_info = np.array([[img.shape[0], img.shape[1], scale]], dtype=np.float32)  # (h, w, scale)
     img = np.swapaxes(img, 0, 2)
-    img = np.swapaxes(img, 1, 2)  # change to r,g,b order
+    img = np.swapaxes(img, 1, 2)  # change to (c, h, w) order
     img = img[np.newaxis, :]  # extend to (n, c, h, w)
 
     ctx = mx.gpu(args.gpu)

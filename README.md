@@ -5,7 +5,7 @@ Using [MXNet](https://github.com/dmlc/mxnet) for Face-related Algorithm
 About
 --------
 Using mxnet for face-related algorithm, here now only provide :
-* a trained `mxnet-face-fr50`(faster-rcnn+resnet-50) model, which achieve tpr=89.7% when fp=100 and tpr=93.0% when fp=500 on fddb.
+* a trained `mxnet-face-fr50`(faster-rcnn+resnet-50) model, which achieve tpr=91.44% when fp=100 and tpr=95.51% when fp=500 on fddb.
 * a trained lightened cnn[1] model on **Face Identity**, together with the training script, the single model get *97.13%+-0.88%* accuracy on LFW, and with only 20MB size.
 * a trained lightened moon[1][2] model (combine the changed lightened cnn and moon loss) on **Face Attribute Prediction**, together with the training script, the single model get about *87.41%* accuracy on CelebA, and with only 18MB size.
 
