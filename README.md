@@ -5,7 +5,7 @@ Using [MXNet](https://github.com/dmlc/mxnet) for Face-related Algorithm
 About
 --------
 Using mxnet for face-related algorithm, here now only provide :
-* a trained `mxnet-face-fr50`(faster-rcnn+resnet-50) model, which achieve tpr=91.44% when fp=100 and tpr=95.51% when fp=500 on fddb.
+* a trained `mxnet-face-fr50`(faster-rcnn+resnet-50) model, which achieve tpr=89.7% when fp=100 and tpr=93.0% when fp=500 on fddb.
 * a trained lightened cnn[1] model on **Face Identity**, together with the training script, the single model get *97.13%+-0.88%* accuracy on LFW, and with only 20MB size.
 * a trained lightened moon[1][2] model (combine the changed lightened cnn and moon loss) on **Face Attribute Prediction**, together with the training script, the single model get about *87.41%* accuracy on CelebA, and with only 18MB size.
 
@@ -23,6 +23,10 @@ Face Detection
 -----------
 we provide the pre-trained model [mxnet-face-fr50-0000.params](http://pan.baidu.com/s/1c2G9SZI), which is trained with resnet-50+faser-rcnn for 7 epoch on wider-face[4] dataset, our mxnet-face-fr50's performance on fddb is:  
 ![mxnet-face-fr50-roc.png](detection/mxnet-face-fr50-roc.png)
+
+you can also find the result on [fddb official website](http://vis-www.cs.umass.edu/fddb/results.html)  
+the training code is come from my anohter repo : [train_widerface.py](https://github.com/tornadomeet/mx-rcnn/blob/master/train_widerface.py)  
+
 the way of using `mxnet-face-fr50` for face detection is very easy:
 * download `mxnet-face-fr50-0000.params`,`mxnet-face-fr50-symbol.json`and put them into detection directory.
 * got to detection dir, and run `./demo.sh`, you can set different parameters for face detection, see it by `python detection.py --help`  
