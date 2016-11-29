@@ -21,7 +21,7 @@ cd model
 
 Face Detection
 -----------
-we provide the pre-trained model [mxnet-face-fr50-0000.params](http://pan.baidu.com/s/1c2G9SZI), which is trained with resnet-50+faser-rcnn for 7 epoch on wider-face[4] dataset, our mxnet-face-fr50's performance on fddb is:  
+we provide the pre-trained model mxnet-face-fr50-0000.params on [baiduyun](http://pan.baidu.com/s/1c2G9SZI) or [dropbox](https://www.dropbox.com/sh/yqn8sken82gpmfr/AAC8WNSaA1ADVuUq8yaPQF0da?dl=0), which is trained with resnet-50+faser-rcnn for 7 epoch on wider-face[4] dataset, our mxnet-face-fr50's performance on fddb is:  
 ![mxnet-face-fr50-roc.png](detection/mxnet-face-fr50-roc.png)
 
 you can also find the result on [fddb official website](http://vis-www.cs.umass.edu/fddb/results.html)  
