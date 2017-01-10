@@ -17,7 +17,7 @@ cd model
 ./get-models.sh
 ```
 * this will download the face alignned model used in [dlib](https://github.com/davisking/dlib), because in the face identification experiment, it will use face alignment technology before extractting face faceture.
-* using my slightly changed mxnet branch [face](https://github.com/tornadomeet/mxnet/tree/face) if you want to train the face attribution model.
+* using my slightly changed mxnet branch [face](https://github.com/tornadomeet/mxnet/tree/face) if you want to train/test the face attribution model.
 
 Face Detection
 -----------
