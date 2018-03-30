@@ -302,10 +302,10 @@ class AlignDlib:
                 dlib_rects = []
                 for (x,y,w,h) in faces:
                     dlib_rects.append(dlib.rectangle(int(x), int(y), int(x+w), int(y+h)))
-                    if len(faces) > 0:
-                        bb = max(dlib_rects, key=lambda rect: rect.width() * rect.height())
-                    else:
-                        bb = None
+                if len(faces) > 0:
+                    bb = max(dlib_rects, key=lambda rect: rect.width() * rect.height())
+                else:
+                    bb = None
             else:
                 bb = self.getLargestFaceBoundingBox(rgbImg)
             if bb is None:
@@ -313,10 +313,13 @@ class AlignDlib:
             if pad is not None:
                 left = int(max(0, bb.left() - bb.width()*float(pad[0])))
                 top = int(max(0, bb.top() - bb.height()*float(pad[1])))
-                right = int(min(rgbImg.shape[1], bb.right() + bb.width()*float(pad[2])))
-                bottom = int(min(rgbImg.shape[0], bb.bottom()+bb.height()*float(pad[3])))
+                right = int(min(rgbImg.shape[1]-1, bb.right() + bb.width()*float(pad[2])))
+                bottom = int(min(rgbImg.shape[0]-1, bb.bottom()+bb.height()*float(pad[3])))
                 bb = dlib.rectangle(left, top, right, bottom)
 
+        if only_crop:
+            return rgbImg[bb.top():bb.bottom(), bb.left():bb.right()]
+                    # crop is rgbImg[y: y + h, x: x + w]
         if landmarks is None:
             landmarks = self.findLandmarks(rgbImg, bb)
 
@@ -328,11 +331,8 @@ class AlignDlib:
             # reserve more area of forehead on a face
             dstLandmarks[(0,1),1] = dstLandmarks[(0,1),1] + imgDim * float(ts)
             dstLandmarks[2,1] = dstLandmarks[2,1] + imgDim * float(ts) / 2
-        if not only_crop:
-            H = cv2.getAffineTransform(npLandmarks[npLandmarkIndices],dstLandmarks)
-            return cv2.warpAffine(rgbImg, H, (imgDim, imgDim))
-        else:
-            return rgbImg[top:bottom, left:right] # crop is rgbImg[y: y + h, x: x + w]
+        H = cv2.getAffineTransform(npLandmarks[npLandmarkIndices],dstLandmarks)
+        return cv2.warpAffine(rgbImg, H, (imgDim, imgDim))
 
 
 def write(vals, fName):
