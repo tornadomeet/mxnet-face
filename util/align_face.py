@@ -313,10 +313,13 @@ class AlignDlib:
             if pad is not None:
                 left = int(max(0, bb.left() - bb.width()*float(pad[0])))
                 top = int(max(0, bb.top() - bb.height()*float(pad[1])))
-                right = int(min(rgbImg.shape[1], bb.right() + bb.width()*float(pad[2])))
-                bottom = int(min(rgbImg.shape[0], bb.bottom()+bb.height()*float(pad[3])))
+                right = int(min(rgbImg.shape[1]-1, bb.right() + bb.width()*float(pad[2])))
+                bottom = int(min(rgbImg.shape[0]-1, bb.bottom()+bb.height()*float(pad[3])))
                 bb = dlib.rectangle(left, top, right, bottom)
 
+        if only_crop:
+            return rgbImg[bb.top():bb.bottom(), bb.left():bb.right()]
+                    # crop is rgbImg[y: y + h, x: x + w]
         if landmarks is None:
             landmarks = self.findLandmarks(rgbImg, bb)
 
@@ -324,15 +327,12 @@ class AlignDlib:
         npLandmarkIndices = np.array(landmarkIndices)
 
         dstLandmarks = imgDim * MINMAX_TEMPLATE[npLandmarkIndices]
-        if not only_crop:
-            if ts is not None:
-                # reserve more area of forehead on a face
-                dstLandmarks[(0,1),1] = dstLandmarks[(0,1),1] + imgDim * float(ts)
-                dstLandmarks[2,1] = dstLandmarks[2,1] + imgDim * float(ts) / 2
-            H = cv2.getAffineTransform(npLandmarks[npLandmarkIndices],dstLandmarks)
-            return cv2.warpAffine(rgbImg, H, (imgDim, imgDim))
-        else:
-            return rgbImg[bb.top():bb.bottom(), bb.left():bb.right()] # crop is rgbImg[y: y + h, x: x + w]
+        if ts is not None:
+            # reserve more area of forehead on a face
+            dstLandmarks[(0,1),1] = dstLandmarks[(0,1),1] + imgDim * float(ts)
+            dstLandmarks[2,1] = dstLandmarks[2,1] + imgDim * float(ts) / 2
+        H = cv2.getAffineTransform(npLandmarks[npLandmarkIndices],dstLandmarks)
+        return cv2.warpAffine(rgbImg, H, (imgDim, imgDim))
 
 
 def write(vals, fName):
