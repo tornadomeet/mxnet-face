@@ -302,10 +302,10 @@ class AlignDlib:
                 dlib_rects = []
                 for (x,y,w,h) in faces:
                     dlib_rects.append(dlib.rectangle(int(x), int(y), int(x+w), int(y+h)))
-                    if len(faces) > 0:
-                        bb = max(dlib_rects, key=lambda rect: rect.width() * rect.height())
-                    else:
-                        bb = None
+                if len(faces) > 0:
+                    bb = max(dlib_rects, key=lambda rect: rect.width() * rect.height())
+                else:
+                    bb = None
             else:
                 bb = self.getLargestFaceBoundingBox(rgbImg)
             if bb is None:
@@ -324,15 +324,15 @@ class AlignDlib:
         npLandmarkIndices = np.array(landmarkIndices)
 
         dstLandmarks = imgDim * MINMAX_TEMPLATE[npLandmarkIndices]
-        if ts is not None:
-            # reserve more area of forehead on a face
-            dstLandmarks[(0,1),1] = dstLandmarks[(0,1),1] + imgDim * float(ts)
-            dstLandmarks[2,1] = dstLandmarks[2,1] + imgDim * float(ts) / 2
         if not only_crop:
+            if ts is not None:
+                # reserve more area of forehead on a face
+                dstLandmarks[(0,1),1] = dstLandmarks[(0,1),1] + imgDim * float(ts)
+                dstLandmarks[2,1] = dstLandmarks[2,1] + imgDim * float(ts) / 2
             H = cv2.getAffineTransform(npLandmarks[npLandmarkIndices],dstLandmarks)
             return cv2.warpAffine(rgbImg, H, (imgDim, imgDim))
         else:
-            return rgbImg[top:bottom, left:right] # crop is rgbImg[y: y + h, x: x + w]
+            return rgbImg[bb.top():bb.bottom(), bb.left():bb.right()] # crop is rgbImg[y: y + h, x: x + w]
 
 
 def write(vals, fName):
